@@ -30,7 +30,7 @@ body {
 
 }
 
-.screen {
+.display {
     display: flex;
     justify-content: flex-end;
     width: 400px;
