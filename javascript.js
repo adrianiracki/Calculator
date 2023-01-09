@@ -21,12 +21,16 @@ function operate(operator, a, b) {
     switch (operator) {
         case '+':
             return add(a, b);
+            break;
         case '-':
             return subtract(a, b);
+            break;
         case '*':
             return multiply(a, b);
+            break;
         case '/':
             return divide(a, b);
+            break;
     };
 };
 
@@ -37,16 +41,17 @@ numberButtons.forEach((numberButton) => {
     numberButton.addEventListener('click', updateDisplay)
 });
 
-let displayValue = 0;
+let currentValue = 0;
 
 function updateDisplay() {
-    if(display.textContent === '0') {
+    if(display.textContent === '0' || typeNewNumber === true) {
         display.textContent = '';
     };
     if (display.textContent.length < 10) {
         display.textContent += this.textContent;
     };
-    displayValue = +display.textContent
+    currentValue = +display.textContent;
+    typeNewNumber = false;
 };
 
 //Functionality for the 'backspace' button
@@ -55,7 +60,7 @@ backspaceButton.addEventListener('click', backspace);
 
 function backspace () {
     display.textContent = display.textContent.slice(0, display.textContent.length -1);
-    displayValue = +display.textContent
+    currentValue = +display.textContent
 };
 
 //Functionality for the 'clear' button
@@ -64,7 +69,8 @@ clearButton.addEventListener('click', clear);
 
 function clear() {
     display.textContent = '0';
-    displayValue = 0;
+    currentValue = 0;
+    memoryValue = null;
 };
 
 //Functionality for the 'percentage' button
@@ -72,8 +78,8 @@ const percentageButton = document.querySelector('#percentage');
 percentageButton.addEventListener('click', percentage);
 
 function percentage() {
-    displayValue /= 100;
-    display.textContent = displayValue;
+    currentValue /= 100;
+    display.textContent = currentValue;
 };
 
 //Functionality for the decimal point button
@@ -98,9 +104,77 @@ function changeSign() {
             display.textContent = display.textContent.slice(1);
         };
     };
-    displayValue = +display.textContent;
+    currentValue = +display.textContent;
 };
 
+//Core function - making calculations
+
+let operator;
+let memoryValue = null;
+const calculateButtons = document.querySelectorAll('.calculation');
+calculateButtons.forEach(button => button.addEventListener('click', (event) => {
+
+    switch(event.target.textContent){
+        case '=': {
+            if(memoryValue) {
+                currentValue = operate(operator, memoryValue, currentValue)
+                display.textContent = currentValue;
+                memoryValue = null;
+                typeNewNumber = true;
+            };
+            break;
+        }
+        case '+': {
+            if(memoryValue) {
+                currentValue = operate(operator, memoryValue, currentValue)
+                display.textContent = currentValue;
+                memoryValue = currentValue;
+            } else {
+                memoryValue = currentValue;
+            };
+            operator = '+' 
+            typeNewNumber = true
+            break;
+        };
+        case '-': {
+            if(memoryValue) {
+                currentValue = operate(operator, memoryValue, currentValue)
+                display.textContent = currentValue;
+                memoryValue = currentValue;
+            } else {
+                memoryValue = currentValue;
+            };
+            operator = '-' 
+            typeNewNumber = true
+            break;
+        };
+        case '*': {
+            if(memoryValue) {
+                currentValue = operate(operator, memoryValue, currentValue)
+                display.textContent = currentValue;
+                memoryValue = currentValue;
+            } else {
+                memoryValue = currentValue;
+            };
+            operator = '*' 
+            typeNewNumber = true
+            break;
+        };
+        case '/': {
+            if(memoryValue) {
+                currentValue = operate(operator, memoryValue, currentValue)
+                display.textContent = currentValue;
+                memoryValue = currentValue;
+            } else {
+                memoryValue = currentValue;
+            };
+            operator = '/' 
+            typeNewNumber = true
+            break;
+        };
+    };
+
+}))
 
 
 
