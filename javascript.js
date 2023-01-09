@@ -29,7 +29,8 @@ function operate(operator, a, b) {
             return multiply(a, b);
             break;
         case '/':
-            return divide(a, b);
+            if(b === 0) return 'Nope'
+            else return divide(a, b);
             break;
     };
 };
@@ -123,7 +124,11 @@ calculateButtons.forEach(button => button.addEventListener('click', (event) => {
     };
     
     if(event.target.textContent !== '=') {
-        memoryValue = currentValue;
+        if(display.textContent === 'Nope') {
+            memoryValue = null;
+        } else {
+            memoryValue = currentValue;
+        };
         typeNewNumber = true;
         operator = event.target.textContent;
     };
