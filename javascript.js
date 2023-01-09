@@ -41,8 +41,6 @@ numberButtons.forEach((numberButton) => {
     numberButton.addEventListener('click', updateDisplay)
 });
 
-let currentValue = 0;
-
 function updateDisplay() {
     if(display.textContent === '0' || typeNewNumber === true) {
         display.textContent = '';
@@ -108,73 +106,29 @@ function changeSign() {
 };
 
 //Core function - making calculations
-
 let operator;
+let currentValue = 0;
 let memoryValue = null;
 const calculateButtons = document.querySelectorAll('.calculation');
 calculateButtons.forEach(button => button.addEventListener('click', (event) => {
 
-    switch(event.target.textContent){
-        case '=': {
-            if(memoryValue) {
-                currentValue = operate(operator, memoryValue, currentValue)
-                display.textContent = currentValue;
-                memoryValue = null;
-                typeNewNumber = true;
-            };
-            break;
-        }
-        case '+': {
-            if(memoryValue) {
-                currentValue = operate(operator, memoryValue, currentValue)
-                display.textContent = currentValue;
-                memoryValue = currentValue;
-            } else {
-                memoryValue = currentValue;
-            };
-            operator = '+' 
-            typeNewNumber = true
-            break;
-        };
-        case '-': {
-            if(memoryValue) {
-                currentValue = operate(operator, memoryValue, currentValue)
-                display.textContent = currentValue;
-                memoryValue = currentValue;
-            } else {
-                memoryValue = currentValue;
-            };
-            operator = '-' 
-            typeNewNumber = true
-            break;
-        };
-        case '*': {
-            if(memoryValue) {
-                currentValue = operate(operator, memoryValue, currentValue)
-                display.textContent = currentValue;
-                memoryValue = currentValue;
-            } else {
-                memoryValue = currentValue;
-            };
-            operator = '*' 
-            typeNewNumber = true
-            break;
-        };
-        case '/': {
-            if(memoryValue) {
-                currentValue = operate(operator, memoryValue, currentValue)
-                display.textContent = currentValue;
-                memoryValue = currentValue;
-            } else {
-                memoryValue = currentValue;
-            };
-            operator = '/' 
-            typeNewNumber = true
-            break;
+    if(memoryValue) {
+        currentValue = operate(operator, memoryValue, currentValue);
+        display.textContent = currentValue;
+    
+        if(event.target.textContent === '='){
+            memoryValue = null;
+            typeNewNumber = true;
         };
     };
+    
+    if(event.target.textContent !== '=') {
+        memoryValue = currentValue;
+        typeNewNumber = true;
+        operator = event.target.textContent;
+    };
 
-}))
+}));
 
 
 
