@@ -106,7 +106,7 @@ function changeSign() {
     currentValue = +display.textContent;
 };
 
-//Core function - making calculations
+//Core function - making calculations and updating the display with the result
 let operator;
 let currentValue = 0;
 let memoryValue = null;
@@ -115,8 +115,15 @@ calculateButtons.forEach(button => button.addEventListener('click', (event) => {
 
     if(memoryValue) {
         currentValue = operate(operator, memoryValue, currentValue);
-        display.textContent = currentValue;
-    
+
+        if (currentValue > 9999999999) {
+            display.textContent = currentValue.toExponential(4);
+        } else if (currentValue.toString().includes('.')){
+            display.textContent = fixDecimals(currentValue);
+        } else {
+            display.textContent = currentValue;
+        };
+
         if(event.target.textContent === '='){
             memoryValue = null;
             typeNewNumber = true;
@@ -135,11 +142,10 @@ calculateButtons.forEach(button => button.addEventListener('click', (event) => {
 
 }));
 
-
-
-
-
-
-
-
+//A function that rounds decimal numbers depending on free screen space
+function fixDecimals(currentValue) {
+    let splitNumber = currentValue.toString().split('.');
+    let fixedDecimals = currentValue.toFixed(9 - splitNumber[0].length);
+    return fixedDecimals;
+};
 
