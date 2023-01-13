@@ -46,7 +46,7 @@ function updateDisplay() {
     if(display.textContent === '0' || typeNewNumber === true) {
         display.textContent = '';
     };
-    if (display.textContent.length < 10) {
+    if (display.textContent.length < 9) {
         display.textContent += this.textContent;
     };
     currentValue = +display.textContent;
@@ -78,7 +78,11 @@ percentageButton.addEventListener('click', percentage);
 
 function percentage() {
     currentValue /= 100;
+    if (currentValue.toString().includes('.')){
+        display.textContent = fixDecimals(currentValue);
+    } else {
     display.textContent = currentValue;
+    };
 };
 
 //Functionality for the decimal point button
@@ -145,7 +149,12 @@ calculateButtons.forEach(button => button.addEventListener('click', (event) => {
 //A function that rounds decimal numbers depending on free screen space
 function fixDecimals(currentValue) {
     let splitNumber = currentValue.toString().split('.');
-    let fixedDecimals = currentValue.toFixed(9 - splitNumber[0].length);
+    let fixedDecimals;
+    if(currentValue < 0.00000001) {
+        fixedDecimals = currentValue.toExponential(5 - splitNumber[0].length);
+    } else {
+    fixedDecimals = currentValue.toFixed(9 - splitNumber[0].length);
+    };
     return fixedDecimals;
 };
 
