@@ -101,7 +101,7 @@ sign.addEventListener('click', changeSign);
 
 function changeSign() {
     if(display.textContent !== '0'){
-        if(!display.textContent.includes('-')){
+        if(!(display.textContent.charAt(0) === '-')){
             display.textContent = '-' + display.textContent;
         } else {
             display.textContent = display.textContent.slice(1);
@@ -135,7 +135,7 @@ calculateButtons.forEach(button => button.addEventListener('click', (event) => {
     };
     
     if(event.target.textContent !== '=') {
-        if(display.textContent === 'Nope') {
+        if(display.textContent === 'Nope' || display.textContent === 'NaN') {
             memoryValue = null;
         } else {
             memoryValue = currentValue;
@@ -152,9 +152,31 @@ function fixDecimals(currentValue) {
     let fixedDecimals;
     if(currentValue < 0.00000001) {
         fixedDecimals = currentValue.toExponential(5 - splitNumber[0].length);
-    } else {
+        return fixedDecimals;
+    } else if (currentValue.toString().length > 8) {
     fixedDecimals = currentValue.toFixed(9 - splitNumber[0].length);
-    };
     return fixedDecimals;
+    } else { 
+        return currentValue
+    };
+    
 };
+
+//Changing color on click
+function changeColor(event) {
+    buttons.forEach(button => button.classList.remove('clicked'));
+    event.target.classList.add('clicked');
+    console.log(event.target)
+};
+
+function removeTransition(event) {
+    console.log(event);
+    buttons.forEach(button => button.classList.remove('clicked'));
+};
+
+const buttons = document.querySelectorAll('.buttons-container > button');
+buttons.forEach(button => button.addEventListener('click', changeColor,));
+
+const flashButtons = document.querySelectorAll('.numberButton, .function, #decimal, #sign, #equals');
+flashButtons.forEach(button => button.addEventListener('transitionend', removeTransition));
 
